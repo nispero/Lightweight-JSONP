@@ -15,7 +15,7 @@
           }
         });
 
-        JSONP.get('http://ip.jsontest.com/', {}, function (data) {
+        JSONP.get('http://ip.jsontest.com/', function (data) {
           var example = document.getElementById('example');
           example.innerHTML = "Your IP is: " + data.ip;
 

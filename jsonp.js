@@ -64,6 +64,11 @@
     var query = (url || '').indexOf('?') === -1 ? '?' : '&',
       key;
 
+    if (typeof params === 'function') {
+      callback = params;
+      params = {};
+    }
+
     callbackName = callbackName || config.callbackName ||'callback';
     var uniqueName = callbackName + "_json" + (++counter);
 
