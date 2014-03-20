@@ -15,20 +15,19 @@
 */
 
 (function () {
-  var glob = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : null;
-
-  if (!glob) {
-    throw new Error("Unknown environment, can't attach to global variable");
+  if (typeof window === 'undefined') {
+    throw new Error("This script is only for use in browser environment");
   }
-
-  var exportName = 'JSONP',
-    _prev = glob[exportName],
+  var win =  window,
+    doc = win.document,
+    exportName = 'JSONP',
+    _prev = win[exportName],
     counter = 0,
     head,
     config = {};
 
   function load(url, pfnError) {
-    var script = document.createElement('script'),
+    var script = doc.createElement('script'),
       done = false;
     script.src = url;
     script.async = true;
@@ -51,7 +50,7 @@
     };
 
     if (!head) {
-      head = document.getElementsByTagName('head')[0];
+      head = doc.getElementsByTagName('head')[0];
     }
     head.appendChild(script);
   }
@@ -79,11 +78,11 @@
       }
     }
 
-    glob[uniqueName] = function(data) {
+    win[uniqueName] = function(data) {
       callback(data);
       try {
-        glob[uniqueName] = null;
-        delete glob[uniqueName];
+        win[uniqueName] = null;
+        delete win[uniqueName];
       } catch (e) {}
     };
 
@@ -102,9 +101,9 @@
   };
 
   function noConflict () {
-    glob[exportName] = _prev;
+    win[exportName] = _prev;
     return exports;
   }
 
-  glob[exportName] = exports;
+  win[exportName] = exports;
 }());
