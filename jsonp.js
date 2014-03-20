@@ -14,8 +14,14 @@
 */
 
 (function () {
+  var glob = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : null;
+
+  if (!glob) {
+    throw new Error("Unknown environment, can't attach to global variable");
+  }
+
   var exportName = 'JSONP',
-    _prev = window[exportName],
+    _prev = glob[exportName],
     counter = 0,
     head,
     config = {};
@@ -67,11 +73,11 @@
       }
     }
 
-    window[uniqueName] = function(data) {
+    glob[uniqueName] = function(data) {
       callback(data);
       try {
-        window[uniqueName] = null;
-        delete window[uniqueName];
+        glob[uniqueName] = null;
+        delete glob[uniqueName];
       } catch (e) {}
     };
 
@@ -90,9 +96,9 @@
   };
 
   function noConflict () {
-    window[exportName] = _prev;
+    glob[exportName] = _prev;
     return exports;
   }
 
-  window[exportName] = exports;
+  glob[exportName] = exports;
 }());

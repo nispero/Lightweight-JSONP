@@ -7,19 +7,22 @@
   <body>
     <div id="example"></div>
     <script>
-      JSONP.init({
-        error: function(ex){
-          alert("Failed to load : " + ex.url);
-        }
-      });
+      (function(){
+        var JSONP = window.JSONP.noConflict();
+        JSONP.init({
+          error: function(ex){
+            alert("Failed to load : " + ex.url);
+          }
+        });
 
-      JSONP.get('http://ip.jsontest.com/', {}, function (data) {
-        var example = document.getElementById('example');
-        example.innerHTML = data.ip;
+        JSONP.get('http://ip.jsontest.com/', {}, function (data) {
+          var example = document.getElementById('example');
+          example.innerHTML = data.ip;
 
-        //Uncomment the following call will trigger the error callback and alert the failing url.
-        //JSONP.get('not-existing-url');
-      });
+          //Uncomment the following call will trigger the error callback and alert the failing url.
+          //JSONP.get('not-existing-url');
+        });
+      }());
     </script>
   </body>
 </html>
