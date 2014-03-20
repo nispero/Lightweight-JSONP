@@ -5,7 +5,10 @@
     <script src="../jsonp.js"></script>
   </head>
   <body>
-    <div id="example"></div>
+    <p>Getting IP adress...</p>
+    <div id="example1"></div>
+    <p>Validating JSON <code>{"key":"value"}</code>...</p>
+    <div id="example2"></div>
     <script>
       (function(){
         var JSONP = window.JSONP.noConflict();
@@ -16,12 +19,18 @@
         });
 
         JSONP.get('http://ip.jsontest.com/', function (data) {
-          var example = document.getElementById('example');
+          var example = document.getElementById('example1');
           example.innerHTML = "Your IP is: " + data.ip;
-
-          //Uncomment the following call will trigger the error callback and alert the failing url.
-          //JSONP.get('not-existing-url');
         });
+
+        JSONP.get('http://validate.jsontest.com/', { json: "{\"key\":\"value\"}" }, function (data) {
+          var example = document.getElementById('example2');
+          example.innerHTML = "JSON is " + (data.validate ? "valid" : "invalid");
+        });
+
+        //Uncomment the following call will trigger the error callback and alert the failing url.
+        //JSONP.get('not-existing-url');
+
       }());
     </script>
   </body>
