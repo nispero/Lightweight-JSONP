@@ -1,6 +1,7 @@
 /*
 * Lightweight JSONP fetcher
 * Copyright 2010-2012 Erik Karlsson. All rights reserved.
+* Copyright 2014 Eugene Mirotin — code refactoring, UMD, Bower support.
 * BSD licensed
 */
 
