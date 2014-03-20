@@ -13,8 +13,10 @@
 * });
 */
 
-var JSONP = (function () {
-  var counter = 0,
+(function () {
+  var exportName = 'JSONP',
+    _prev = window[exportName],
+    counter = 0,
     head,
     config = {};
 
@@ -81,8 +83,16 @@ var JSONP = (function () {
     config = obj;
   }
 
-  return {
+  var exports = {
     get: jsonp,
-    init: setDefaults
+    init: setDefaults,
+    noConflict: noConflict
   };
+
+  function noConflict () {
+    window[exportName] = _prev;
+    return exports;
+  }
+
+  window[exportName] = exports;
 }());
