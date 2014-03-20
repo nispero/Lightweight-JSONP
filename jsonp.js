@@ -14,14 +14,24 @@
 * });
 */
 
-(function () {
+!function (name, context, definition) {
+  if (typeof module != 'undefined' && module.exports) module.exports = definition();
+  else if (typeof define == 'function' && define.amd) define(definition);
+  else {
+    var prev = context[name],
+      self = definition();
+    self.noConflict = function () {
+      context[name] = prev;
+      return self;
+    };
+    context[name] = self;
+  }
+}('JSONP', this, function () {
   if (typeof window === 'undefined') {
     throw new Error("This script is only for use in browser environment");
   }
   var win =  window,
     doc = win.document,
-    exportName = 'JSONP',
-    _prev = win[exportName],
     counter = 0,
     head,
     config = {};
@@ -94,16 +104,8 @@
     config = obj;
   }
 
-  var exports = {
+  return {
     get: jsonp,
-    init: setDefaults,
-    noConflict: noConflict
+    init: setDefaults
   };
-
-  function noConflict () {
-    win[exportName] = _prev;
-    return exports;
-  }
-
-  win[exportName] = exports;
-}());
+});
